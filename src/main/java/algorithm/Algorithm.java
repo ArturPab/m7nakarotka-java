@@ -23,12 +23,19 @@ public class Algorithm {
         saveCorrectWordsInFile(substrings, words, wordDetails.getSubstringLength());
     }
 
+    /**
+     *
+     * @param substrings with length given by user
+     * @param words with length given by user
+     * @param substringLength given by user
+     * method saves to result's file all words that are consistent with the task
+     */
     private void saveCorrectWordsInFile(HashMap<String, String> substrings, List<String> words, int substringLength) {
         File outFile = new File("src/main/java/data/result.txt");
         try {
             PrintWriter out = new PrintWriter(new FileWriter(outFile, StandardCharsets.UTF_8));
             for(String word: words) {
-               if(isSubstringCheckedProperly(word.substring(word.length()-substringLength), substrings)) {
+               if(isSubstringProperly(word.substring(word.length()-substringLength), substrings)) {
                    out.println(word);
                }
             }
@@ -39,7 +46,13 @@ public class Algorithm {
 
     }
 
-    private boolean isSubstringCheckedProperly(String substring, HashMap<String, String> substrings) {
+    /**
+     *
+     * @param substring from substrings
+     * @param substrings
+     * @return true if substring ONLY READ AS REVERSE exists in dictionary
+     */
+    private boolean isSubstringProperly(String substring, HashMap<String, String> substrings) {
         String reversedSubstring = new StringBuilder().append(substring).reverse().toString();
         if(substrings.containsKey(reversedSubstring)) {
             return (!substrings.containsKey(substring));
@@ -47,6 +60,14 @@ public class Algorithm {
         return false;
     }
 
+    /**
+     *
+     * @param substrings - empty HashMap
+     * @param words - empty list
+     * @param wordDetails - details with word's and substring's length, which have to be searched
+     * @param dictionaryFile with all words
+     * method searches for words consistent with the details
+     */
     private void findWordsByDetails(HashMap<String, String> substrings, List<String> words, WordDetails wordDetails, InputStream dictionaryFile) {
         Scanner scanner = new Scanner(dictionaryFile, StandardCharsets.UTF_8);
         while (scanner.hasNextLine()) {
@@ -59,6 +80,10 @@ public class Algorithm {
         }
     }
 
+    /**
+     *
+     * @return if given length equals to word's length
+     */
     private boolean hasCharsEnough(int length, int wordLength) {
         return length==wordLength;
     }
